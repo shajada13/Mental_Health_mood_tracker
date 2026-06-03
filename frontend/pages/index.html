@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MindFlow — Understand Your Mind. Improve Your Life.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  --blue:        #5E9EFF;
+  --blue-dark:   #3d7fe0;
+  --blue-light:  #e8f1ff;
+  --lavender:    #B8A1FF;
+  --lavender-light: #f0ecff;
+  --bg:          #F8FAFC;
+  --white:       #FFFFFF;
+  --green:       #7BD389;
+  --pink:        #FF9BB5;
+  --amber:       #FFB830;
+  --text:        #1a1f36;
+  --text-mid:    #4a5578;
+  --text-soft:   #8892b0;
+  --border:      rgba(94,158,255,0.12);
+  --shadow-sm:   0 2px 12px rgba(94,158,255,0.08);
+  --shadow-md:   0 8px 32px rgba(94,158,255,0.14);
+  --shadow-lg:   0 20px 60px rgba(94,158,255,0.18);
+  --radius:      20px;
+  --radius-lg:   28px;
+  --radius-xl:   40px;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+h1,h2,h3,h4,h5 { font-family: 'Poppins', sans-serif; line-height: 1.2; }
+
+a { text-decoration: none; color: inherit; }
+
+img { max-width: 100%; display: block; }
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--lavender); border-radius: 10px; }
+
+/* ============================================================
+   ANIMATED BACKGROUND MESH
+   ============================================================ */
+.mesh-bg {
+  position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+}
+.mesh-bg::before {
+  content: '';
+  position: absolute;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(94,158,255,0.12) 0%, transparent 70%);
+  top: -200px; left: -200px;
+  animation: floatA 18s ease-in-out infinite;
+}
+.mesh-bg::after {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184,161,255,0.12) 0%, transparent 70%);
+  bottom: -100px; right: -100px;
+  animation: floatB 22s ease-in-out infinite;
+}
+@keyframes floatA {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%      { transform: translate(80px,60px) scale(1.1); }
+}
+@keyframes floatB {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%      { transform: translate(-60px,-80px) scale(1.15); }
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 0 5%;
+  height: 72px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(248,250,252,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.3s;
+}
+.navbar.scrolled { box-shadow: var(--shadow-sm); }
+
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo-icon {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 4px 14px rgba(94,158,255,0.35);
+}
+.nav-logo-text {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700; font-size: 1.2rem;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.nav-logo-sub { font-size: 0.6rem; color: var(--text-soft); font-weight: 400; display: block; margin-top: -4px; }
+
+.nav-links {
+  display: flex; align-items: center; gap: 8px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.88rem; font-weight: 500; color: var(--text-mid);
+  padding: 6px 14px; border-radius: 10px;
+  transition: all 0.2s;
+}
+.nav-links a:hover { background: var(--blue-light); color: var(--blue); }
+
+.nav-actions { display: flex; align-items: center; gap: 10px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem; font-weight: 600;
+  padding: 10px 22px; border-radius: 14px;
+  border: none; cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative; overflow: hidden;
+}
+.btn::after {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0.15);
+  opacity: 0; transition: opacity 0.2s;
+}
+.btn:hover::after { opacity: 1; }
+.btn:active { transform: scale(0.97); }
+
+.btn-ghost {
+  background: transparent; color: var(--text-mid);
+  border: 1.5px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  color: var(--white);
+  box-shadow: 0 4px 18px rgba(94,158,255,0.35);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(94,158,255,0.45); }
+
+.btn-lg { font-size: 1rem; padding: 14px 32px; border-radius: 18px; }
+
+.btn-white {
+  background: var(--white); color: var(--blue);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+}
+.btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.15); }
+
+.btn-outline-white {
+  background: transparent; color: var(--white);
+  border: 2px solid rgba(255,255,255,0.5);
+}
+.btn-outline-white:hover { background: rgba(255,255,255,0.15); border-color: white; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 100px 5% 60px;
+  position: relative; overflow: hidden;
+}
+
+.hero-content {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 16px 6px 8px;
+  font-size: 0.78rem; font-weight: 600;
+  color: var(--blue);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+  animation: fadeUp 0.6s ease both;
+}
+.hero-badge-dot {
+  width: 22px; height: 22px;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+}
+
+.hero-title {
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+.hero-title .gradient-text {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--lavender) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem; color: var(--text-mid);
+  max-width: 480px; line-height: 1.7;
+  margin-bottom: 36px;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+
+.hero-cta {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  margin-bottom: 48px;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+
+.hero-social-proof {
+  display: flex; align-items: center; gap: 14px;
+  animation: fadeUp 0.6s 0.4s ease both;
+}
+.hero-avatars {
+  display: flex;
+}
+.hero-avatars span {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 2.5px solid white;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  margin-left: -8px;
+  box-shadow: 0 2px 8px rgba(94,158,255,0.25);
+}
+.hero-avatars span:first-child { margin-left: 0; }
+.hero-proof-text { font-size: 0.82rem; color: var(--text-mid); }
+.hero-proof-text strong { color: var(--blue); }
+
+/* Hero Visual */
+.hero-visual {
+  position: relative;
+  animation: fadeLeft 0.8s 0.2s ease both;
+}
+
+.hero-card-main {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  position: relative; z-index: 2;
+}
+.hero-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.hero-card-title { font-family: 'Poppins',sans-serif; font-weight: 600; font-size: 0.95rem; }
+.hero-card-badge {
+  background: var(--blue-light); color: var(--blue);
+  font-size: 0.7rem; font-weight: 600;
+  padding: 4px 10px; border-radius: 20px;
+}
+
+.mood-row {
+  display: flex; justify-content: space-between; margin-bottom: 22px;
+}
+.mood-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 12px 16px; border-radius: 16px;
+  border: 2px solid transparent;
+  background: var(--bg); cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.72rem; color: var(--text-mid);
+  font-weight: 500;
+}
+.mood-btn:hover, .mood-btn.active {
+  border-color: var(--blue);
+  background: var(--blue-light);
+  color: var(--blue);
+  transform: translateY(-3px);
+}
+.mood-btn span { font-size: 1.5rem; }
+
+.stats-row {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;
+}
+.stat-mini {
+  background: var(--bg); border-radius: 14px; padding: 14px;
+  text-align: center;
+}
+.stat-mini-val {
+  font-family: 'Poppins',sans-serif;
+  font-weight: 700; font-size: 1.3rem;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.stat-mini-label { font-size: 0.68rem; color: var(--text-soft); margin-top: 2px; }
+.stat-mini-sub { font-size: 0.65rem; color: var(--green); font-weight: 500; }
+
+/* Floating cards */
+.float-card {
+  position: absolute;
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+  z-index: 3;
+  animation: floatCard 4s ease-in-out infinite;
+}
+.float-card-ai {
+  top: -30px; left: -50px;
+  display: flex; align-items: center; gap: 10px;
+  animation-delay: 0s;
+}
+.float-card-ai-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.float-card-ai-text { font-size: 0.78rem; }
+.float-card-ai-text strong { display: block; font-weight: 600; font-size: 0.8rem; }
+
+.float-card-streak {
+  bottom: 20px; left: -40px;
+  display: flex; align-items: center; gap: 10px;
+  animation-delay: 1.5s;
+}
+.float-card-streak-icon {
+  font-size: 1.6rem;
+}
+
+.float-card-alert {
+  top: 40px; right: -50px;
+  animation-delay: 0.8s;
+  min-width: 180px;
+}
+.float-card-alert-header {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.75rem; font-weight: 700; color: #e05555; margin-bottom: 6px;
+}
+.alert-dot { width: 8px; height: 8px; background: #e05555; border-radius: 50%; animation: pulse 1.5s ease infinite; }
+
+@keyframes floatCard {
+  0%,100% { transform: translateY(0px); }
+  50%      { transform: translateY(-8px); }
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.5; transform: scale(1.3); }
+}
+
+/* Chart inside hero card */
+.mini-chart {
+  height: 60px; display: flex; align-items: flex-end; gap: 6px;
+  margin-top: 4px;
+}
+.chart-bar {
+  flex: 1; border-radius: 6px 6px 0 0;
+  background: linear-gradient(to top, var(--blue), rgba(184,161,255,0.6));
+  transition: all 0.3s;
+  min-height: 8px;
+}
+.chart-bar:hover { filter: brightness(1.1); transform: scaleY(1.05); transform-origin: bottom; }
+
+/* ============================================================
+   SECTION SHARED
+   ============================================================ */
+section { padding: 100px 5%; }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+
+.section-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--blue-light);
+  color: var(--blue); font-weight: 600; font-size: 0.78rem;
+  padding: 6px 14px; border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 800; margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 1.0rem; color: var(--text-mid);
+  max-width: 540px; line-height: 1.7;
+}
+.text-center { text-align: center; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+/* Fade-in on scroll */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ============================================================
+   STATS BAND
+   ============================================================ */
+.stats-band {
+  padding: 0 5% 20px;
+}
+.stats-band-inner {
+  max-width: 1200px; margin: 0 auto;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 40px 50px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+}
+.stat-item {
+  text-align: center;
+  padding: 0 30px;
+  border-right: 1px solid var(--border);
+}
+.stat-item:last-child { border-right: none; }
+.stat-val {
+  font-family: 'Poppins',sans-serif;
+  font-size: 2.4rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  display: block;
+}
+.stat-label { font-size: 0.85rem; color: var(--text-mid); margin-top: 4px; }
+
+/* ============================================================
+   FEATURES SECTION
+   ============================================================ */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-top: 56px;
+}
+
+.feature-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative; overflow: hidden;
+  cursor: default;
+}
+.feature-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(94,158,255,0.04), rgba(184,161,255,0.04));
+  opacity: 0; transition: opacity 0.3s;
+}
+.feature-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+.feature-card:hover::before { opacity: 1; }
+
+.feature-icon {
+  width: 52px; height: 52px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 20px;
+}
+.icon-blue { background: var(--blue-light); }
+.icon-lavender { background: var(--lavender-light); }
+.icon-green { background: rgba(123,211,137,0.15); }
+.icon-pink { background: rgba(255,155,181,0.15); }
+.icon-amber { background: rgba(255,184,48,0.15); }
+
+.feature-title {
+  font-family: 'Poppins',sans-serif;
+  font-size: 1.05rem; font-weight: 700;
+  margin-bottom: 10px;
+}
+.feature-desc {
+  font-size: 0.88rem; color: var(--text-mid);
+  line-height: 1.6;
+}
+.feature-tag {
+  display: inline-block;
+  background: var(--blue-light); color: var(--blue);
+  font-size: 0.68rem; font-weight: 700;
+  padding: 3px 10px; border-radius: 20px;
+  margin-top: 16px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.feature-tag.green { background: rgba(123,211,137,0.15); color: #2e8b57; }
+.feature-tag.lavender { background: var(--lavender-light); color: #7b5ea7; }
+
+/* Big feature row */
+.feature-big-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 32px; margin-top: 24px;
+}
+.feature-big {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column;
+  transition: all 0.3s;
+}
+.feature-big:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+
+/* ============================================================
+   EMERGENCY SECTION
+   ============================================================ */
+.emergency-section {
+  background: linear-gradient(135deg, #1a1f36 0%, #2d2250 50%, #1e2a45 100%);
+  border-radius: var(--radius-xl);
+  margin: 0 5% 40px;
+  padding: 80px 60px;
+  position: relative; overflow: hidden;
+}
+.emergency-section::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(94,158,255,0.12) 0%, transparent 70%);
+}
+
+.emergency-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+  position: relative; z-index: 1;
+}
+
+.emergency-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 100px; padding: 6px 16px;
+  font-size: 0.78rem; font-weight: 600; color: #FF9BB5;
+  margin-bottom: 20px;
+}
+
+.emergency-title {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 800; color: white; margin-bottom: 18px;
+}
+.emergency-title span {
+  background: linear-gradient(135deg, var(--pink), var(--lavender));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.emergency-desc { color: rgba(255,255,255,0.7); font-size: 0.95rem; line-height: 1.7; margin-bottom: 30px; }
+
+.emergency-features { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+.emergency-features li {
+  display: flex; align-items: flex-start; gap: 12px;
+  color: rgba(255,255,255,0.85); font-size: 0.9rem;
+}
+.emergency-features li::before {
+  content: '✓';
+  width: 22px; height: 22px; min-width: 22px;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700; color: white;
+}
+
+/* Emergency UI mockup */
+.emergency-ui {
+  display: flex; flex-direction: column; gap: 16px;
+}
+.emergency-alert-card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.emergency-alert-card.danger {
+  border-color: rgba(224,85,85,0.4);
+  background: rgba(224,85,85,0.08);
+}
+.alert-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+}
+.alert-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.alert-icon.red { background: rgba(224,85,85,0.2); }
+.alert-icon.blue { background: rgba(94,158,255,0.2); }
+.alert-title { font-weight: 700; color: white; font-size: 0.9rem; }
+.alert-subtitle { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+.alert-body { font-size: 0.82rem; color: rgba(255,255,255,0.7); margin-bottom: 16px; }
+.alert-btns { display: flex; gap: 10px; }
+
+.contact-list { display: flex; flex-direction: column; gap: 10px; }
+.contact-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.05); border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.contact-info { display: flex; align-items: center; gap: 10px; }
+.contact-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: white; font-weight: 600;
+}
+.contact-name { font-size: 0.82rem; font-weight: 600; color: white; }
+.contact-role { font-size: 0.7rem; color: rgba(255,255,255,0.5); }
+
+/* Toggle switch */
+.toggle {
+  width: 44px; height: 24px;
+  background: var(--blue);
+  border-radius: 12px; position: relative;
+  cursor: pointer;
+}
+.toggle::after {
+  content: ''; position: absolute;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: white; top: 3px; right: 3px;
+  transition: 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.toggle.off { background: rgba(255,255,255,0.15); }
+.toggle.off::after { right: auto; left: 3px; }
+
+/* ============================================================
+   AI SECTION
+   ============================================================ */
+.ai-section { background: transparent; }
+.ai-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+
+.ai-features { display: flex; flex-direction: column; gap: 24px; margin-top: 32px; }
+.ai-feature-item {
+  display: flex; gap: 18px; align-items: flex-start;
+  padding: 22px 24px;
+  background: var(--white); border-radius: var(--radius);
+  border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+  transition: all 0.3s;
+  cursor: default;
+}
+.ai-feature-item:hover { transform: translateX(8px); box-shadow: var(--shadow-md); border-color: var(--blue); }
+.ai-feature-icon {
+  width: 46px; height: 46px; min-width: 46px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.ai-feature-text h4 {
+  font-size: 0.95rem; font-weight: 700; margin-bottom: 4px;
+}
+.ai-feature-text p { font-size: 0.83rem; color: var(--text-mid); line-height: 1.5; }
+
+/* AI chat mockup */
+.ai-chat-mock {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.chat-header {
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  padding: 18px 22px;
+  display: flex; align-items: center; gap: 12px;
+}
+.chat-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  border: 2px solid rgba(255,255,255,0.4);
+}
+.chat-header-text h4 { color: white; font-size: 0.9rem; font-weight: 700; }
+.chat-header-text span { font-size: 0.72rem; color: rgba(255,255,255,0.8); }
+.chat-online { width: 8px; height: 8px; background: var(--green); border-radius: 50%; margin-left: auto; box-shadow: 0 0 0 2px rgba(255,255,255,0.4); animation: pulse 2s infinite; }
+
+.chat-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; max-height: 320px; overflow: hidden; }
+
+.msg {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  font-size: 0.83rem; line-height: 1.5;
+}
+.msg-ai {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 18px 18px 18px 4px;
+  color: var(--text);
+  align-self: flex-start;
+}
+.msg-user {
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  color: white;
+  border-radius: 18px 18px 4px 18px;
+  align-self: flex-end;
+}
+.msg-sender { font-size: 0.68rem; color: var(--text-soft); margin-bottom: 5px; font-weight: 600; }
+
+.chat-input-row {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.chat-input {
+  flex: 1; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 12px; padding: 10px 14px;
+  font-size: 0.82rem; color: var(--text-soft);
+  font-family: 'Inter',sans-serif;
+}
+.chat-send {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  border-radius: 10px; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 14px;
+  transition: 0.2s;
+}
+.chat-send:hover { transform: scale(1.1); }
+
+/* Insight cards below chat */
+.insight-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.insight-card {
+  background: var(--white); border-radius: var(--radius);
+  padding: 16px; border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.insight-label { font-size: 0.7rem; color: var(--text-soft); margin-bottom: 4px; }
+.insight-val {
+  font-family: 'Poppins',sans-serif;
+  font-weight: 700; font-size: 1.4rem;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.insight-sub { font-size: 0.7rem; color: var(--green); font-weight: 500; }
+
+/* ============================================================
+   TESTIMONIALS
+   ============================================================ */
+.testimonials-section { background: transparent; }
+.testimonials-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-top: 56px;
+}
+.testimonial-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s;
+  position: relative;
+}
+.testimonial-card::before {
+  content: '"';
+  position: absolute; top: 20px; right: 24px;
+  font-size: 5rem; line-height: 1;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  opacity: 0.15;
+  font-family: Georgia, serif;
+}
+.testimonial-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+
+.testimonial-stars { color: var(--amber); font-size: 0.85rem; margin-bottom: 16px; letter-spacing: 2px; }
+.testimonial-text {
+  font-size: 0.9rem; color: var(--text-mid); line-height: 1.7;
+  margin-bottom: 22px;
+  font-style: italic;
+}
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.testimonial-avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  border: 2px solid var(--border);
+}
+.testimonial-name { font-weight: 700; font-size: 0.88rem; margin-bottom: 2px; }
+.testimonial-role { font-size: 0.75rem; color: var(--text-soft); }
+
+/* ============================================================
+   CTA BANNER
+   ============================================================ */
+.cta-banner {
+  margin: 0 5% 80px;
+  background: linear-gradient(135deg, var(--blue) 0%, var(--lavender) 100%);
+  border-radius: var(--radius-xl);
+  padding: 70px 60px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E") repeat;
+}
+.cta-banner-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 800; color: white; margin-bottom: 16px;
+  position: relative;
+}
+.cta-banner-sub { color: rgba(255,255,255,0.85); font-size: 1rem; max-width: 480px; margin: 0 auto 36px; position: relative; }
+.cta-banner-btns { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  background: #1a1f36;
+  padding: 70px 5% 30px;
+  color: rgba(255,255,255,0.7);
+}
+.footer-inner { max-width: 1200px; margin: 0 auto; }
+.footer-top {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 50px; margin-bottom: 50px;
+}
+.footer-brand-logo {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+}
+.footer-brand-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.footer-brand-name {
+  font-family: 'Poppins',sans-serif; font-weight: 700; font-size: 1.1rem;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.footer-brand-desc { font-size: 0.85rem; line-height: 1.7; max-width: 280px; margin-bottom: 24px; }
+.footer-socials { display: flex; gap: 10px; }
+.social-btn {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.07); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.2s;
+}
+.social-btn:hover { background: var(--blue); transform: translateY(-2px); }
+
+.footer-col h4 {
+  font-family: 'Poppins',sans-serif;
+  font-size: 0.9rem; font-weight: 700; color: white;
+  margin-bottom: 18px;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a {
+  font-size: 0.83rem; color: rgba(255,255,255,0.6);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--blue); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 28px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+}
+.footer-bottom-text { font-size: 0.8rem; }
+.footer-bottom-links { display: flex; gap: 20px; }
+.footer-bottom-links a { font-size: 0.8rem; color: rgba(255,255,255,0.5); transition: 0.2s; }
+.footer-bottom-links a:hover { color: var(--blue); }
+
+.footer-crisis {
+  background: rgba(224,85,85,0.1); border: 1px solid rgba(224,85,85,0.25);
+  border-radius: 14px; padding: 16px 20px;
+  margin-bottom: 40px;
+  display: flex; align-items: center; gap: 14px;
+  font-size: 0.85rem;
+}
+.footer-crisis-icon { font-size: 1.4rem; }
+.footer-crisis a { color: #FF9BB5; font-weight: 600; text-decoration: underline; }
+
+/* ============================================================
+   MOBILE HAMBURGER
+   ============================================================ */
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 8px;
+}
+.hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text); border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .hero-content   { grid-template-columns: 1fr; gap: 40px; }
+  .hero-visual    { max-width: 500px; margin: 0 auto; }
+  .features-grid  { grid-template-columns: repeat(2, 1fr); }
+  .ai-inner       { grid-template-columns: 1fr; gap: 40px; }
+  .emergency-inner{ grid-template-columns: 1fr; gap: 40px; }
+  .stats-band-inner { grid-template-columns: repeat(2,1fr); gap: 24px; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 24px; }
+  .stat-item:nth-child(odd) { border-right: 1px solid var(--border); }
+  .stat-item:nth-child(n+3) { border-bottom: none; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr 1fr; }
+  .feature-big-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .nav-links, .nav-actions .btn-ghost { display: none; }
+  .hamburger { display: flex; }
+  .hero { padding: 90px 5% 60px; }
+  .features-grid  { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .emergency-section { margin: 0 4% 30px; padding: 50px 30px; }
+  .cta-banner { margin: 0 4% 60px; padding: 50px 30px; }
+  .float-card-ai { top: -20px; left: -10px; }
+  .float-card-streak { bottom: 10px; left: -10px; }
+  .float-card-alert { display: none; }
+  .stats-band-inner { padding: 30px 24px; }
+  .footer-top { grid-template-columns: 1fr; gap: 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Animated background -->
+<div class="mesh-bg"></div>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-logo">
+    <div class="nav-logo-icon">🧠</div>
+    <div>
+      <span class="nav-logo-text">MindFlow</span>
+      <span class="nav-logo-sub">Mental Health Tracker</span>
+    </div>
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#emergency">Emergency</a></li>
+    <li><a href="#ai">AI Assistant</a></li>
+    <li><a href="#testimonials">Stories</a></li>
+    <li><a href="./resources.html">Resources</a></li>
+    <li><a href="#">Pricing</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <a href="./login.html" class="btn btn-ghost">Login</a>
+    <a href="./register.html" class="btn btn-primary">Get Started Free</a>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <div class="hero-content">
+    <!-- Left -->
+    <div class="hero-left">
+      <div class="hero-badge">
+        <div class="hero-badge-dot">✨</div>
+        AI-Powered Mental Wellness Platform
+      </div>
+
+      <h1 class="hero-title">
+        Understand Your<br/>
+        <span class="gradient-text">Mind. Improve</span><br/>
+        Your Life.
+      </h1>
+
+      <p class="hero-subtitle">
+        Track your emotions, get AI-powered insights, and build healthier habits every day.
+        Your personal mental health companion — always here, always private.
+      </p>
+
+      <div class="hero-cta">
+        <a href="./register.html" class="btn btn-primary btn-lg">
+          🚀 Start Tracking Free
+        </a>
+        <a href="#features" class="btn btn-ghost btn-lg">
+          ▶ View Demo
+        </a>
+      </div>
+
+      <div class="hero-social-proof">
+        <div class="hero-avatars">
+          <span>👩</span><span>👨</span><span>👧</span><span>🧑</span>
+        </div>
+        <div class="hero-proof-text">
+          Trusted by <strong>10,000+</strong> happy users<br/>
+          ⭐⭐⭐⭐⭐ 4.9/5 — 95% positive feedback
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Dashboard visual -->
+    <div class="hero-visual">
+
+      <!-- Floating AI card -->
+      <div class="float-card float-card-ai">
+        <div class="float-card-ai-icon">🤖</div>
+        <div class="float-card-ai-text">
+          <strong>AI Insight</strong>
+          You feel better after exercise 🎯
+        </div>
+      </div>
+
+      <!-- Floating streak card -->
+      <div class="float-card float-card-streak">
+        <div class="float-card-streak-icon">🔥</div>
+        <div class="float-card-ai-text">
+          <strong>7-Day Streak!</strong>
+          Keep it up, Sarah 💪
+        </div>
+      </div>
+
+      <!-- Floating alert card -->
+      <div class="float-card float-card-alert">
+        <div class="float-card-alert-header">
+          <div class="alert-dot"></div>
+          High Stress Detected
+        </div>
+        <div style="font-size:0.75rem;color:var(--text-mid)">Your contacts are being notified</div>
+      </div>
+
+      <!-- Main dashboard card -->
+      <div class="hero-card-main">
+        <div class="hero-card-header">
+          <span class="hero-card-title">☀️ Good Morning, Sarah!</span>
+          <span class="hero-card-badge">This Week</span>
+        </div>
+
+        <!-- Mood selector -->
+        <div style="font-size:0.8rem;color:var(--text-soft);margin-bottom:12px;font-weight:500;">How are you feeling today?</div>
+        <div class="mood-row">
+          <div class="mood-btn"><span>😊</span>Great</div>
+          <div class="mood-btn active"><span>😃</span>Good</div>
+          <div class="mood-btn"><span>😐</span>Okay</div>
+          <div class="mood-btn"><span>😔</span>Bad</div>
+          <div class="mood-btn"><span>😢</span>Awful</div>
+        </div>
+
+        <!-- Stats row -->
+        <div class="stats-row">
+          <div class="stat-mini">
+            <div class="stat-mini-val">4.2</div>
+            <div class="stat-mini-label">Mood Score</div>
+            <div class="stat-mini-sub">↑ Good</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-val">65</div>
+            <div class="stat-mini-label">Stress Level</div>
+            <div class="stat-mini-sub" style="color:var(--amber)">Moderate</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-val">7.6h</div>
+            <div class="stat-mini-label">Sleep Quality</div>
+            <div class="stat-mini-sub">↑ Good</div>
+          </div>
+        </div>
+
+        <!-- Mini chart -->
+        <div style="font-size:0.75rem;color:var(--text-soft);margin-bottom:8px;">Mood Trend (This Week)</div>
+        <div class="mini-chart" id="heroChart"></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--text-soft);margin-top:4px;">
+          <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     STATS BAND
+     ============================================================ -->
+<div class="stats-band reveal">
+  <div class="stats-band-inner">
+    <div class="stat-item">
+      <span class="stat-val" data-target="10000">0</span>
+      <div class="stat-label">Happy Users Worldwide</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-val" data-target="95" data-suffix="%">0%</span>
+      <div class="stat-label">Positive Feedback Rate</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-val" data-target="24" data-suffix="/7">0</span>
+      <div class="stat-label">AI Support Available</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-val" data-target="500000">0</span>
+      <div class="stat-label">Mood Check-ins Logged</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     FEATURES
+     ============================================================ -->
+<section id="features" style="padding-top:80px;">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">✦ Everything You Need</div>
+      <h2 class="section-title">Your Complete Mental<br/>Wellness Toolkit</h2>
+      <p class="section-sub">
+        MindFlow combines daily tracking, smart analytics, and AI support to help you understand and improve your emotional wellbeing.
+      </p>
+    </div>
+
+    <div class="features-grid" style="margin-top:56px;">
+      <div class="feature-card reveal">
+        <div class="feature-icon icon-blue">📊</div>
+        <div class="feature-title">Daily Mood Tracking</div>
+        <div class="feature-desc">Log your mood, stress, sleep, and activities in under 2 minutes. Build a picture of your emotional patterns over time.</div>
+        <span class="feature-tag">Core Feature</span>
+      </div>
+
+      <div class="feature-card reveal" style="transition-delay:0.1s">
+        <div class="feature-icon icon-lavender">🤖</div>
+        <div class="feature-title">AI-Powered Insights</div>
+        <div class="feature-desc">Our AI analyzes your data and surfaces meaningful patterns — like why Mondays feel harder or what boosts your energy.</div>
+        <span class="feature-tag lavender">AI Powered</span>
+      </div>
+
+      <div class="feature-card reveal" style="transition-delay:0.2s">
+        <div class="feature-icon icon-green">📓</div>
+        <div class="feature-title">Smart Journaling</div>
+        <div class="feature-desc">Write freely in your private journal. AI reads sentiment and flags when you might need extra support — discreetly.</div>
+        <span class="feature-tag green">Private & Safe</span>
+      </div>
+
+      <div class="feature-card reveal" style="transition-delay:0.1s">
+        <div class="feature-icon icon-pink">📈</div>
+        <div class="feature-title">Reports & Analytics</div>
+        <div class="feature-desc">Beautiful weekly and monthly reports show your mood trends, sleep impact, and progress toward your wellness goals.</div>
+        <span class="feature-tag">Weekly Reports</span>
+      </div>
+
+      <div class="feature-card reveal" style="transition-delay:0.2s">
+        <div class="feature-icon icon-amber">🧘</div>
+        <div class="feature-title">Wellness Resources</div>
+        <div class="feature-desc">Access guided meditations, breathing exercises, articles, and calming music — all curated by mental health professionals.</div>
+        <span class="feature-tag lavender">Expert Curated</span>
+      </div>
+
+      <div class="feature-card reveal" style="transition-delay:0.3s">
+        <div class="feature-icon icon-blue">🔥</div>
+        <div class="feature-title">Streak & Habits</div>
+        <div class="feature-desc">Build consistency with daily check-in streaks, habit reminders, and gentle nudges that celebrate your progress.</div>
+        <span class="feature-tag green">Gamified</span>
+      </div>
+    </div>
+
+    <!-- Big feature cards -->
+    <div class="feature-big-row" style="margin-top:24px;">
+      <div class="feature-big reveal">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+          <div class="feature-icon icon-lavender" style="margin:0;">💬</div>
+          <div>
+            <div class="feature-title" style="margin:0;">AI Chat Assistant</div>
+            <div style="font-size:0.78rem;color:var(--text-soft);">Available 24/7 · Empathetic · Private</div>
+          </div>
+        </div>
+        <div class="feature-desc" style="margin-bottom:20px;">
+          Talk to your personal AI wellness companion anytime. It listens, responds with empathy, and suggests evidence-based techniques to help you feel better — right now.
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="feature-tag lavender">Empathetic AI</span>
+          <span class="feature-tag">24/7 Support</span>
+          <span class="feature-tag green">Evidence-Based</span>
+        </div>
+      </div>
+
+      <div class="feature-big reveal" style="transition-delay:0.15s; background: linear-gradient(135deg,#f0ecff,#e8f1ff);">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+          <div class="feature-icon icon-blue" style="margin:0;">🔒</div>
+          <div>
+            <div class="feature-title" style="margin:0;">Privacy First</div>
+            <div style="font-size:0.78rem;color:var(--text-soft);">Your data, your control</div>
+          </div>
+        </div>
+        <div class="feature-desc" style="margin-bottom:20px;">
+          Your mental health data is deeply personal. MindFlow uses end-to-end encryption and never sells or shares your information. You can export or delete your data at any time.
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="feature-tag green">End-to-End Encrypted</span>
+          <span class="feature-tag">GDPR Compliant</span>
+          <span class="feature-tag lavender">Full Data Control</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     EMERGENCY ALERT SECTION
+     ============================================================ -->
+<section id="emergency" style="padding:80px 0 40px; background:transparent;">
+  <div class="emergency-section reveal">
+    <div class="emergency-inner">
+
+      <!-- Left: Content -->
+      <div>
+        <div class="emergency-badge">🚨 Emergency Support System</div>
+        <h2 class="emergency-title">
+          Your Safety Is Our<br/>
+          <span>Priority. Always.</span>
+        </h2>
+        <p class="emergency-desc">
+          When our AI detects signs of high stress or crisis, it instantly notifies your trusted contacts and connects you with professional support — so you're never truly alone.
+        </p>
+
+        <ul class="emergency-features">
+          <li>AI monitors your mood and journal entries in real-time for risk signals</li>
+          <li>Instantly notifies your trusted emergency contacts via SMS & email</li>
+          <li>One-tap access to crisis helplines and breathing exercises</li>
+          <li>Smart escalation — minor alerts to contacts, critical alerts to professionals</li>
+          <li>Your information is kept strictly private and secure at all times</li>
+        </ul>
+
+        <div style="display:flex;gap:14px;flex-wrap:wrap;">
+          <a href="./register.html" class="btn btn-white btn-lg">Set Up Emergency Contacts</a>
+          <a href="./emergency.html" class="btn btn-outline-white btn-lg">Learn More</a>
+        </div>
+      </div>
+
+      <!-- Right: UI mockup -->
+      <div class="emergency-ui">
+
+        <!-- Alert card -->
+        <div class="emergency-alert-card danger">
+          <div class="alert-header">
+            <div class="alert-icon red">⚠️</div>
+            <div>
+              <div class="alert-title">High Stress Detected</div>
+              <div class="alert-subtitle">AI Risk Assessment — High</div>
+            </div>
+            <div class="alert-dot" style="margin-left:auto;width:10px;height:10px;background:#e05555;border-radius:50%;"></div>
+          </div>
+          <div class="alert-body">Our AI has detected you may be going through a difficult time. Would you like to talk to someone?</div>
+          <div class="alert-btns">
+            <button class="btn btn-primary" style="font-size:0.78rem;padding:8px 16px;border-radius:10px;">💬 Talk to AI</button>
+            <button class="btn btn-outline-white" style="font-size:0.78rem;padding:8px 16px;border-radius:10px;color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.2);">I'm Okay</button>
+          </div>
+        </div>
+
+        <!-- Emergency contacts card -->
+        <div class="emergency-alert-card">
+          <div style="font-size:0.78rem;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">Emergency Contacts</div>
+          <div class="contact-list">
+            <div class="contact-row">
+              <div class="contact-info">
+                <div class="contact-avatar">M</div>
+                <div>
+                  <div class="contact-name">Mom</div>
+                  <div class="contact-role">Primary Contact</div>
+                </div>
+              </div>
+              <div class="toggle"></div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-info">
+                <div class="contact-avatar" style="background:linear-gradient(135deg,var(--lavender),var(--pink));">E</div>
+                <div>
+                  <div class="contact-name">Emma (Best Friend)</div>
+                  <div class="contact-role">Secondary Contact</div>
+                </div>
+              </div>
+              <div class="toggle"></div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-info">
+                <div class="contact-avatar" style="background:linear-gradient(135deg,var(--green),var(--blue));">Dr</div>
+                <div>
+                  <div class="contact-name">Dr. Smith</div>
+                  <div class="contact-role">Professional Contact</div>
+                </div>
+              </div>
+              <div class="toggle off"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Safety note -->
+        <div style="background:rgba(123,211,137,0.1);border:1px solid rgba(123,211,137,0.25);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:10px;font-size:0.8rem;color:rgba(255,255,255,0.7);">
+          <span style="font-size:1.2rem;">🔒</span>
+          Your information is secure and will only be used to ensure your safety.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     AI SECTION
+     ============================================================ -->
+<section id="ai">
+  <div class="section-inner">
+    <div class="ai-inner">
+
+      <!-- Left: chat mock -->
+      <div class="reveal">
+        <div class="ai-chat-mock">
+          <div class="chat-header">
+            <div class="chat-avatar">🤖</div>
+            <div class="chat-header-text">
+              <h4>MindFlow AI Assistant</h4>
+              <span>Your personal wellness companion</span>
+            </div>
+            <div class="chat-online"></div>
+          </div>
+          <div class="chat-body">
+            <div class="msg msg-ai">
+              <div class="msg-sender">MindFlow AI</div>
+              Hi Sarah! 👋 I'm here to support you. How are you feeling today?
+            </div>
+            <div class="msg msg-user">
+              I feel a bit anxious and overwhelmed.
+            </div>
+            <div class="msg msg-ai">
+              <div class="msg-sender">MindFlow AI</div>
+              I'm sorry to hear that. You've been carrying a lot lately. Here are a few things that might help right now:<br/><br/>
+              • Take 3 slow, deep breaths 🌬️<br/>
+              • Break tasks into smaller steps<br/>
+              • Take a short 10-min walk 🚶<br/><br/>
+              Remember — it's okay to take it one step at a time. You've got this! 💙
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <div class="chat-input">Type your message...</div>
+            <button class="chat-send">→</button>
+          </div>
+        </div>
+
+        <!-- Insight cards -->
+        <div class="insight-cards">
+          <div class="insight-card">
+            <div class="insight-label">Average Mood</div>
+            <div class="insight-val">4.0</div>
+            <div class="insight-sub">↑ +0.6 vs last week</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-label">AI Accuracy</div>
+            <div class="insight-val">92%</div>
+            <div class="insight-sub">✓ High confidence</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: features list -->
+      <div class="reveal" style="transition-delay:0.15s">
+        <div class="section-tag">🤖 AI Intelligence</div>
+        <h2 class="section-title">AI That Truly<br/>Understands You</h2>
+        <p class="section-sub" style="margin-bottom:0;">
+          Powered by advanced language models, our AI learns from your patterns and provides personalized, evidence-based support.
+        </p>
+
+        <div class="ai-features">
+          <div class="ai-feature-item">
+            <div class="ai-feature-icon icon-blue">🔍</div>
+            <div class="ai-feature-text">
+              <h4>Pattern Recognition</h4>
+              <p>Discovers what triggers your stress, what lifts your mood, and what habits drive positive change over time.</p>
+            </div>
+          </div>
+          <div class="ai-feature-item">
+            <div class="ai-feature-icon icon-lavender">💡</div>
+            <div class="ai-feature-text">
+              <h4>Smart Recommendations</h4>
+              <p>Personalised suggestions for exercises, sleep habits, and coping strategies based on your unique data.</p>
+            </div>
+          </div>
+          <div class="ai-feature-item">
+            <div class="ai-feature-icon icon-green">🛡️</div>
+            <div class="ai-feature-text">
+              <h4>Proactive Safety Monitoring</h4>
+              <p>Continuously monitors for distress signals and alerts your support network before a crisis escalates.</p>
+            </div>
+          </div>
+          <div class="ai-feature-item">
+            <div class="ai-feature-icon icon-pink">📅</div>
+            <div class="ai-feature-text">
+              <h4>Weekly AI Reports</h4>
+              <p>Detailed reports every Monday with key insights, trends, and a personalised action plan for the week ahead.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TESTIMONIALS
+     ============================================================ -->
+<section id="testimonials" class="testimonials-section">
+  <div class="section-inner">
+    <div class="reveal text-center">
+      <div class="section-tag mx-auto">💬 Real Stories</div>
+      <h2 class="section-title">People Whose Lives<br/>Changed with MindFlow</h2>
+      <p class="section-sub mx-auto">Real experiences from real people on their mental wellness journey.</p>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"MindFlow helped me understand that my anxiety spikes on Sunday evenings. Once I saw the pattern, I could actually do something about it. Game changer."</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:linear-gradient(135deg,var(--blue-light),var(--lavender-light));">👩</div>
+          <div>
+            <div class="testimonial-name">Sarah W.</div>
+            <div class="testimonial-role">Designer, New York</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal" style="transition-delay:0.1s">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"The emergency contact feature saved me during a really dark period. My mum got alerted before I even reached out — I didn't know I needed that until it happened."</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:linear-gradient(135deg,rgba(123,211,137,0.2),rgba(94,158,255,0.2));">👨</div>
+          <div>
+            <div class="testimonial-name">James C.</div>
+            <div class="testimonial-role">Teacher, London</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal" style="transition-delay:0.2s">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"As a therapist I recommend MindFlow to my clients. The weekly reports give me data-driven insights that help our sessions so much more effective."</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:linear-gradient(135deg,var(--lavender-light),rgba(255,155,181,0.2));">👩‍⚕️</div>
+          <div>
+            <div class="testimonial-name">Dr. Priya S.</div>
+            <div class="testimonial-role">Therapist, Toronto</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust indicators -->
+    <div style="display:flex;justify-content:center;align-items:center;gap:40px;margin-top:56px;flex-wrap:wrap;" class="reveal">
+      <div style="text-align:center;">
+        <div style="font-size:2rem;margin-bottom:6px;">🏆</div>
+        <div style="font-size:0.8rem;font-weight:600;color:var(--text-mid);">Best Wellness App 2024</div>
+        <div style="font-size:0.72rem;color:var(--text-soft);">ProductHunt</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:2rem;margin-bottom:6px;">🔒</div>
+        <div style="font-size:0.8rem;font-weight:600;color:var(--text-mid);">HIPAA Compliant</div>
+        <div style="font-size:0.72rem;color:var(--text-soft);">Data Security</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:2rem;margin-bottom:6px;">⭐</div>
+        <div style="font-size:0.8rem;font-weight:600;color:var(--text-mid);">4.9 App Store Rating</div>
+        <div style="font-size:0.72rem;color:var(--text-soft);">2,400+ Reviews</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:2rem;margin-bottom:6px;">💙</div>
+        <div style="font-size:0.8rem;font-weight:600;color:var(--text-mid);">Clinically Informed</div>
+        <div style="font-size:0.72rem;color:var(--text-soft);">Expert-backed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA BANNER
+     ============================================================ -->
+<div class="cta-banner reveal">
+  <h2 class="cta-banner-title">You Are Not Alone.<br/>We Are Here for You. 💙</h2>
+  <p class="cta-banner-sub">Mental health is just as important as physical health. Start your wellness journey today — it's free.</p>
+  <div class="cta-banner-btns">
+    <a href="./register.html" class="btn btn-white btn-lg">🚀 Start Free Today</a>
+    <a href="./login.html" class="btn btn-outline-white btn-lg">Sign In</a>
+  </div>
+</div>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="footer-inner">
+
+    <!-- Crisis banner -->
+    <div class="footer-crisis">
+      <div class="footer-crisis-icon">🆘</div>
+      <div>
+        <strong style="color:white;">If you are in crisis, please reach out immediately.</strong><br/>
+        National Helpline: <a href="tel:988">988</a> · Crisis Text Line: text HOME to 741741 · Emergency: <a href="tel:911">911</a>
+      </div>
+    </div>
+
+    <div class="footer-top">
+      <!-- Brand -->
+      <div>
+        <div class="footer-brand-logo">
+          <div class="footer-brand-icon">🧠</div>
+          <span class="footer-brand-name">MindFlow</span>
+        </div>
+        <p class="footer-brand-desc">Your personal mental health companion. Track, understand, and improve your emotional wellbeing with AI-powered insights.</p>
+        <div class="footer-socials">
+          <div class="social-btn">𝕏</div>
+          <div class="social-btn">in</div>
+          <div class="social-btn">📘</div>
+          <div class="social-btn">📸</div>
+        </div>
+      </div>
+
+      <!-- Product -->
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul class="footer-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Mobile App</a></li>
+          <li><a href="#">API</a></li>
+          <li><a href="#">Changelog</a></li>
+        </ul>
+      </div>
+
+      <!-- Support -->
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul class="footer-links">
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Status Page</a></li>
+          <li><a href="./resources.html">Resources</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul class="footer-links">
+          <li><a href="./privacy.html">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">HIPAA Compliance</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">GDPR</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-text">© 2025 MindFlow Inc. All rights reserved. Made with 💙 for mental wellness.</div>
+      <div class="footer-bottom-links">
+        <a href="./privacy.html">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ----- Navbar scroll ----- */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+/* ----- Hero chart bars ----- */
+const heroChart = document.getElementById('heroChart');
+const moodData = [55, 35, 50, 72, 80, 95, 78];
+moodData.forEach((val, i) => {
+  const bar = document.createElement('div');
+  bar.className = 'chart-bar';
+  bar.style.height = '0px';
+  bar.style.transitionDelay = (i * 0.1) + 's';
+  heroChart.appendChild(bar);
+  setTimeout(() => { bar.style.height = val + '%'; }, 400 + i * 100);
+});
+
+/* ----- Mood button interaction ----- */
+document.querySelectorAll('.mood-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+/* ----- Scroll reveal ----- */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ----- Counter animation ----- */
+function animateCounter(el, target, suffix = '') {
+  const duration = 2000;
+  const start = performance.now();
+  const startVal = 0;
+
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(startVal + (target - startVal) * eased);
+    const display = target >= 1000
+      ? (current >= 1000 ? (current / 1000).toFixed(target >= 100000 ? 0 : 1) + 'K' : current)
+      : current;
+    el.textContent = display + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const target = parseInt(el.dataset.target);
+      const suffix = el.dataset.suffix || '';
+      animateCounter(el, target, suffix);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe(el));
+
+/* ----- Toggle interaction on emergency contacts ----- */
+document.querySelectorAll('.toggle').forEach(toggle => {
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('off');
+  });
+});
+
+/* ----- Smooth chat typing effect ----- */
+const chatBody = document.querySelector('.chat-body');
+if (chatBody) {
+  const lastMsg = chatBody.querySelector('.msg-ai:last-child');
+  if (lastMsg) {
+    lastMsg.style.opacity = '0';
+    setTimeout(() => {
+      lastMsg.style.transition = 'opacity 0.5s ease';
+      lastMsg.style.opacity = '1';
+    }, 1200);
+  }
+}
+
+/* ----- Mobile menu ----- */
+document.getElementById('hamburger')?.addEventListener('click', () => {
+  const links = document.querySelector('.nav-links');
+  if (links) {
+    const isOpen = links.style.display === 'flex';
+    links.style.display = isOpen ? 'none' : 'flex';
+    links.style.flexDirection = 'column';
+    links.style.position = 'absolute';
+    links.style.top = '72px';
+    links.style.left = '0'; links.style.right = '0';
+    links.style.background = 'rgba(248,250,252,0.98)';
+    links.style.padding = '20px 5%';
+    links.style.backdropFilter = 'blur(20px)';
+    links.style.borderBottom = '1px solid var(--border)';
+    links.style.zIndex = '999';
+  }
+});
+</script>
+</body>
+</html>
