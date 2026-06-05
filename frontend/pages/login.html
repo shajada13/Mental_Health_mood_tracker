@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — MindFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/login.css" />
+</head>
+<body>
+
+  <!-- Animated background orbs -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Page wrapper: left panel + right panel -->
+  <div class="page-wrapper">
+
+    <!-- ── LEFT PANEL (branding) ── -->
+    <div class="left-panel">
+      <div class="left-inner">
+
+        <!-- Logo -->
+        <a href="./index.html" class="logo">
+          <div class="logo-icon">🧠</div>
+          <div class="logo-text">
+            <span class="logo-name">MindFlow</span>
+            <span class="logo-sub">Mental Health Tracker</span>
+          </div>
+        </a>
+
+        <!-- Hero copy -->
+        <div class="left-hero">
+          <div class="left-tag">✦ Welcome Back</div>
+          <h1 class="left-title">
+            Continue Your<br/>
+            <span class="gradient-text">Wellness Journey</span>
+          </h1>
+          <p class="left-desc">
+            Your mind matters. Pick up exactly where you left off — your moods, journal, and AI insights are waiting for you.
+          </p>
+        </div>
+
+        <!-- Feature pills -->
+        <div class="feature-pills">
+          <div class="pill"><span>📊</span> Mood Tracking</div>
+          <div class="pill"><span>🤖</span> AI Insights</div>
+          <div class="pill"><span>🚨</span> Emergency Support</div>
+          <div class="pill"><span>📓</span> Private Journal</div>
+        </div>
+
+        <!-- Testimonial snippet -->
+        <div class="left-quote">
+          <div class="quote-stars">★★★★★</div>
+          <p class="quote-text">"MindFlow helped me understand my anxiety triggers in just 2 weeks. I feel so much more in control."</p>
+          <div class="quote-author">
+            <div class="quote-avatar">👩</div>
+            <div>
+              <div class="quote-name">Sarah W.</div>
+              <div class="quote-role">Designer · New York</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── RIGHT PANEL (form) ── -->
+    <div class="right-panel">
+      <div class="form-container">
+
+        <!-- Top back link -->
+        <a href="./index.html" class="back-link">
+          <span class="back-arrow">←</span> Back to Home
+        </a>
+
+        <!-- Form card -->
+        <div class="form-card">
+
+          <!-- Card header -->
+          <div class="card-header">
+            <div class="card-icon">👋</div>
+            <h2 class="card-title">Welcome Back</h2>
+            <p class="card-sub">Login to continue your journey</p>
+          </div>
+
+          <!-- Social login -->
+          <div class="social-btns">
+            <button class="social-btn" id="googleBtn" type="button">
+              <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
+              Continue with Google
+            </button>
+            <button class="social-btn" id="appleBtn" type="button">
+              <svg width="18" height="18" viewBox="0 0 814 1000"><path fill="currentColor" d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-43.4-150.3-109.2C74.5 747.3 32 618.4 32 496.1c0-177.2 115.4-270.9 230.8-270.9 59.5 0 109 39.5 147.2 39.5 36.4 0 93.7-41.8 162-41.8 26 0 108.2 2.6 168.3 75.2zM533.5 166.7c28-33.3 48.7-79.7 48.7-126.1 0-6.4-.6-12.9-1.9-18.1-46.2 1.9-101.5 30.9-134.5 69.5-24.3 27.4-48.1 73.7-48.1 120.8 0 7.1 1.3 14.2 1.9 16.5 2.6.6 6.5 1.3 10.4 1.3 41.8 0 94.4-28 122.5-63.9z"/></svg>
+              Continue with Apple
+            </button>
+          </div>
+
+          <!-- Divider -->
+          <div class="divider"><span>or continue with email</span></div>
+
+          <!-- Login form -->
+          <form id="loginForm" novalidate>
+
+            <!-- Email -->
+            <div class="field-group" id="emailGroup">
+              <label class="field-label" for="email">Email Address</label>
+              <div class="field-wrap">
+                <span class="field-icon">✉️</span>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="field-input"
+                  placeholder="your@email.com"
+                  autocomplete="email"
+                  required
+                />
+                <span class="field-status" id="emailStatus"></span>
+              </div>
+              <div class="field-error" id="emailError"></div>
+            </div>
+
+            <!-- Password -->
+            <div class="field-group" id="passwordGroup">
+              <div class="field-label-row">
+                <label class="field-label" for="password">Password</label>
+                <a href="./forgot-password.html" class="forgot-link">Forgot Password?</a>
+              </div>
+              <div class="field-wrap">
+                <span class="field-icon">🔒</span>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="field-input"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                  required
+                />
+                <button type="button" class="toggle-pw" id="togglePw" aria-label="Toggle password visibility">
+                  <span id="eyeIcon">👁️</span>
+                </button>
+              </div>
+              <div class="field-error" id="passwordError"></div>
+            </div>
+
+            <!-- Remember me + strength bar -->
+            <div class="form-row">
+              <label class="checkbox-label">
+                <input type="checkbox" id="rememberMe" name="rememberMe" class="checkbox-input" />
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">Remember me for 30 days</span>
+              </label>
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn-login" id="loginBtn">
+              <span class="btn-login-text">Login to MindFlow</span>
+              <span class="btn-login-icon">→</span>
+              <div class="btn-loader" id="btnLoader"></div>
+            </button>
+
+            <!-- Error message -->
+            <div class="form-error" id="formError"></div>
+
+            <!-- Success message -->
+            <div class="form-success" id="formSuccess"></div>
+
+          </form>
+
+          <!-- Register link -->
+          <div class="register-link">
+            Don't have an account?
+            <a href="./register.html">Create Account →</a>
+          </div>
+
+        </div>
+
+        <!-- Bottom note -->
+        <div class="bottom-note">
+          🔒 Your data is encrypted and always private.<br/>
+          <a href="./privacy.html">Privacy Policy</a> · <a href="#">Terms of Service</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/login.js"></script>
+</body>
+</html>
